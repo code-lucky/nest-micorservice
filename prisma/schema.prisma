@@ -13,10 +13,66 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id String @id @default(uuid())
+model user {
+  id Int @id @default(autoincrement())
   username String @unique
   password String
+  gender String? @default("male")
+  avatar String?
+  phone String?
+  email String?
+  role_id Int
+  role Role @relation(fields: [role_id], references: [id])
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Role {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String?
+  deleted Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  users user[]
+  menus menu_role[]
+}
+
+model menu {
+  id Int @id @default(autoincrement())
+  name String @unique
+  path String @unique
+  icon String
+  pid Int @default(0)
+  type Int @default(0)
+  component String?
+  sort Int @default(0)
+  hidden Boolean @default(false)
+  deleted Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  menus menu_role[]
+}
+
+model menu_role {
+  id Int @id @default(autoincrement())
+  menu_id Int
+  role_id Int
+  menus menu @relation(fields: [menu_id], references: [id])
+  roles Role @relation(fields: [role_id], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+
+model sys_log {
+  id Int @id @default(autoincrement())
+  user_id Int
+  username String
+  operation String
+  method String
+  params String
+  time Int
+  ip String
+  createTime DateTime @default(now())
 }

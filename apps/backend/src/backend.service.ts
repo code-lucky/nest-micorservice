@@ -10,11 +10,17 @@ export class BackendService {
   }
 
   async getUser() {
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        id: 1
-      }
-    })
-    return 'Hello World!';
+    return await this.prismaService.user.findMany();
+  }
+
+  // 创建用户
+  async createUser() {
+    return await this.prismaService.user.create({
+      data: {
+        username: 'Alice',
+        password: '123456',
+        updatedAt: new Date(),
+      },
+    });
   }
 }

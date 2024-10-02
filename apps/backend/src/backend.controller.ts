@@ -10,8 +10,13 @@ export class BackendController {
   private jwtService: JwtService;
 
   @Get()
-  getHello(): string {
-    this.backendService.getUser();
-    return 'success';
+  async getHello(){
+    return await this.backendService.getUser();
+  }
+
+  // 创建用户
+  @Get('createUser')
+  async createUser(){
+    return await this.backendService.createUser();
   }
 }
