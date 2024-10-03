@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '@app/prisma';
 import { Prisma } from '@prisma/client';
+import { md5 } from 'utils/md5';
 
 @Injectable()
 export class UserService {
@@ -11,12 +12,21 @@ export class UserService {
   private prisma: PrismaService;
   
   async login(body: CreateUserDto) {
-    return this.prisma.user.findFirst({
+
+    const user = await this.prisma.user.findFirst({
       where: {
         username: body.username,
-        password: body.password
+        password: md5(body.password)
       }
     });
+
+    if (!user) {
+      return new HttpException('用户不存在或用户密码错误', HttpStatus.BAD_REQUEST);
+    }
+    
+    delete user.password;
+
+    return user;
   }
 
 
@@ -38,7 +48,7 @@ export class UserService {
     return this.prisma.user.create({
       data: {
         username,
-        password,
+        password: md5(password),
         role_id: 1
       },
     });
