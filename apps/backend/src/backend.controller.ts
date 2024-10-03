@@ -11,12 +11,6 @@ export class BackendController {
 
   @Get()
   async getHello(){
-    return await this.backendService.getUser();
-  }
-
-  // 创建用户
-  @Get('createUser')
-  async createUser(){
-    return await this.backendService.createUser();
+    return '404';
   }
 }

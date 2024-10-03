@@ -21,7 +21,7 @@ model user {
   avatar String?
   phone String?
   email String?
-  role_id Int
+  role_id Int @default(0)
   role Role @relation(fields: [role_id], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

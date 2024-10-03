@@ -5,6 +5,7 @@ import { PrismaModule } from '@app/prisma';
 import { EmailModule } from '@app/email';
 import { RedisModule } from '@app/redis';
 import { JwtModule } from '@nestjs/jwt';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { JwtModule } from '@nestjs/jwt';
         }
       }
     }),
-    
+    UserModule,
   ],
   controllers: [BackendController],
   providers: [BackendService],
