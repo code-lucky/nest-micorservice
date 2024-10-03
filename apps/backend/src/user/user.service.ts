@@ -39,7 +39,8 @@ export class UserService {
     });
 
     if (user) {
-      return new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+      console.log('User already exists', HttpStatus.BAD_REQUEST);
+      throw new HttpException('User already exists', HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     const {username, password} = createUserDto
