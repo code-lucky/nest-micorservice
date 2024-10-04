@@ -1,12 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { BackendModule } from './backend.module';
 import { ValidationPipe } from '@nestjs/common';
-import { FormatDatetimeInterceptor } from '@app/common/interceptor/format-datetime.interceptor';
-import { FormatResponseInterceptor } from '@app/common/interceptor/format-response.interceptor';
-import { InvokeRecordInterceptor } from '@app/common/interceptor/invoke-record.interceptor';
 import * as bodyParser from 'body-parser';
-import { UnloginFilter } from 'filter/unlogin.filter';
-import { CustomExceptionFilter } from 'filter/custom-exception.filter';
+import { 
+  FormatDatetimeInterceptor,
+  FormatResponseInterceptor,
+  InvokeRecordInterceptor,
+  UnloginFilter,
+  CustomExceptionFilter
+ } from '@app/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(BackendModule);

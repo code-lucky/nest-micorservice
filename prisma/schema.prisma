@@ -23,8 +23,8 @@ model user {
   email String?
   role_id Int @default(0)
   role Role @relation(fields: [role_id], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }
 
 model Role {
@@ -32,8 +32,8 @@ model Role {
   name String @unique
   description String?
   deleted Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   users user[]
   menus menu_role[]
 }
@@ -49,8 +49,8 @@ model menu {
   sort Int @default(0)
   hidden Boolean @default(false)
   deleted Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
   menus menu_role[]
 }
 
@@ -60,8 +60,8 @@ model menu_role {
   role_id Int
   menus menu @relation(fields: [menu_id], references: [id])
   roles Role @relation(fields: [role_id], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }
 
 

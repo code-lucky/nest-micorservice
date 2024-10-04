@@ -19,7 +19,7 @@ export class BackendService {
       data: {
         username: 'Alice',
         password: '123456',
-        updatedAt: new Date(),
+        updated_at: new Date(),
       },
     });
   }

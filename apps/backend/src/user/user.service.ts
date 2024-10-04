@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '@app/prisma';
 import { Prisma } from '@prisma/client';
 import { md5 } from 'utils/md5';
+import { count } from 'console';
 
 @Injectable()
 export class UserService {
@@ -13,20 +14,22 @@ export class UserService {
   
   async login(body: CreateUserDto) {
 
-    const user = await this.prisma.user.findFirst({
+    const count = await this.prisma.user.count({
       where: {
         username: body.username,
         password: md5(body.password)
       }
     });
 
-    if (!user) {
+    if (count === 0) {
       return new HttpException('用户不存在或用户密码错误', HttpStatus.BAD_REQUEST);
     }
     
-    delete user.password;
+    return '登录成功';
 
-    return user;
+    // delete user.password;
+
+    // return user;
   }
 
 
