@@ -7,6 +7,8 @@ import { RedisModule } from '@app/redis';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './user/user.module';
 import { AuthGuard, CustomExceptionFilter } from '@app/common';
+import { RoleModule } from './role/role.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { AuthGuard, CustomExceptionFilter } from '@app/common';
       }
     }),
     UserModule,
+    RoleModule,
+    MenuModule,
   ],
   controllers: [BackendController],
   providers: [

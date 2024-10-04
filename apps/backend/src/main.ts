@@ -9,12 +9,16 @@ import {
   FormatResponseInterceptor,
   InvokeRecordInterceptor,
  } from '@app/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(BackendModule);
 
   // 开启跨域处理
   app.enableCors();
+
+  // 设置全局前缀
+  app.setGlobalPrefix('backend');
 
   // 全局启用
   app.useGlobalPipes(new ValidationPipe())
@@ -24,6 +28,19 @@ async function bootstrap() {
   // 这里设置请求体的大小限制，例如50mb
   app.use(bodyParser.json({ limit: '10mb' }));
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+
+  const config = new DocumentBuilder()
+    .setTitle('nest-cli')
+    .setDescription('api接口文档')
+    .setVersion('1.0')
+    .addBearerAuth({
+      type: 'http',
+      description: '基于jwt的认证'
+    })
+    .build()
+  const document = SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('api-doc', app, document)
 
   await app.listen(3002);
 }
