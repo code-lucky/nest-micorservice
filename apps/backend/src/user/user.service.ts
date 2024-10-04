@@ -1,10 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '@app/prisma';
-import { Prisma } from '@prisma/client';
 import { md5 } from 'utils/md5';
-import { count } from 'console';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -16,6 +13,12 @@ export class UserService {
   @Inject(JwtService)
   private jwtService: JwtService;
 
+
+  /**
+   * User login
+   * @param body 
+   * @returns 
+   */
   async login(body: CreateUserDto) {
 
     const user = await this.prisma.user.findUnique({
@@ -26,7 +29,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new HttpException('用户不存在或用户密码错误', HttpStatus.BAD_REQUEST);
+      throw new HttpException('User already exists or password error', HttpStatus.BAD_REQUEST);
     }
     delete user.password;
 
@@ -41,7 +44,11 @@ export class UserService {
     }
   }
 
-
+  /**
+   * Create user
+   * @param createUserDto 
+   * @returns 
+   */
   async create(createUserDto: CreateUserDto) {
     // if user already exists
     const count = await this.prisma.user.count({
@@ -49,13 +56,10 @@ export class UserService {
         username: createUserDto.username
       }
     });
-
     if (count === 1) {
-      throw new HttpException('User already exists', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
-
     const { username, password } = createUserDto
-
     // 密码加密
     return this.prisma.user.create({
       data: {
@@ -66,7 +70,11 @@ export class UserService {
     });
   }
 
-  // get user info
+  /**
+   * Get user info
+   * @param id 
+   * @returns 
+   */
   async findUser(id: number) {
     return this.prisma.user.findUnique({
       where: {

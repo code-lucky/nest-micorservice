@@ -44,5 +44,9 @@
       ]
     }
   },
-  "include": ["src/**/*.ts", "typings/*.d.ts"] // 请根据你的项目结构修改此处路径
+  "include": [
+    "apps/**/*.ts",
+    "libs/**/*.ts",
+    "typings/*.d.ts",
+  ],
 }

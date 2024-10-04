@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { RequireLogin } from '@app/common'; // Replace './path/to/require-login.decorator' with the actual path to the decorator file
+import { RequireLogin } from '@app/common';
+import { Request } from 'express';
 
 @Controller('user')
 export class UserController {
