@@ -12,7 +12,6 @@ export class FormatResponseInterceptor implements NestInterceptor {
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate")
     response.header("Pragma", "no-cache");
     response.header("Expires", '0');
-
     return next.handle().pipe(map((data) => {
       return {
         code: response.statusCode == 200 || response.statusCode == 201 ? 200 : response.statusCode,
