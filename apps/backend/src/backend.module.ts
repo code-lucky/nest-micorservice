@@ -6,6 +6,7 @@ import { EmailModule } from '@app/email';
 import { RedisModule } from '@app/redis';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './user/user.module';
+import { AuthGuard } from '@app/common';
 
 @Module({
   imports: [
@@ -26,6 +27,12 @@ import { UserModule } from './user/user.module';
     UserModule,
   ],
   controllers: [BackendController],
-  providers: [BackendService],
+  providers: [
+    BackendService,
+    {
+      provide: 'APP_GUARD',
+      useClass: AuthGuard,
+    }
+  ],
 })
 export class BackendModule {}

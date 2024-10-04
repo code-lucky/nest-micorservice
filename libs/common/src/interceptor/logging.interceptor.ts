@@ -14,14 +14,6 @@ export class LoggingInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       tap(async (data) => {
-        // 创建日志记录
-        const log = new SystemLog();
-        log.api_address = url;
-        log.request_method = method;
-        log.request_param = JSON.stringify(request.body);
-        log.request_ip = ip; // 使用获取的 IP 地址
-        log.response_param = JSON.stringify(data);
-        log.create_time = new Date();
 
         // 排除 systemLog 接口，避免无限循环
         if(url.indexOf('systemLog') === -1) {

@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { BackendModule } from './backend.module';
 import { ValidationPipe } from '@nestjs/common';
-import { FormatDatetimeInterceptor } from 'interceptors/format-datetime.interceptor';
-import { FormatResponseInterceptor } from 'interceptors/format-response.interceptor';
-import { InvokeRecordInterceptor } from 'interceptors/invoke-record.interceptor';
+import { FormatDatetimeInterceptor } from '@app/common/interceptor/format-datetime.interceptor';
+import { FormatResponseInterceptor } from '@app/common/interceptor/format-response.interceptor';
+import { InvokeRecordInterceptor } from '@app/common/interceptor/invoke-record.interceptor';
 import * as bodyParser from 'body-parser';
 import { UnloginFilter } from 'filter/unlogin.filter';
 import { CustomExceptionFilter } from 'filter/custom-exception.filter';
