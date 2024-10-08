@@ -1,6 +1,9 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get,Param, Post, Query } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { RequireLogin } from '@app/common';
+import { CreateRoleDto } from './dto/create-role.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
+import { AssignMenuDto } from './dto/assign-menu.dto';
 
 @RequireLogin()
 @Controller('role')
@@ -9,14 +12,14 @@ export class RoleController {
 
   // create role
   @Post('create')
-  async create() {
-    return await this.roleService.create();
+  async create(@Body() createRoleDto: CreateRoleDto) {
+    return await this.roleService.create(createRoleDto);
   }
 
   // get role list
   @Get('list')
-  async getList() {
-    return await this.roleService.getList();
+  async getList(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+    return await this.roleService.getList(page, limit);
   }
 
   @Get('all')
@@ -25,17 +28,23 @@ export class RoleController {
   }
 
   @Get('detail/:id')
-  async findOne(id: number) {
-    return await this.roleService.findOne(id);
+  async findOne(@Param('id') id: number) {
+    return await this.roleService.findOne(+id);
   }
 
-  @Post('update/:id')
-  async update(id: number) {
-    return await this.roleService.update(id);
+  @Post('update')
+  async update(@Body() updateRoleDto: UpdateRoleDto) {
+    return await this.roleService.update(updateRoleDto);
   }
 
   @Post('delete/:id')
-  async remove(id: number) {
-    return await this.roleService.remove(id);
+  async remove(@Param('id') id: number) {
+    return await this.roleService.remove(+id);
+  }
+
+  // 给角色分配菜单 数组
+  @Post('assignMenu')
+  async assignMenu(@Body() assignMenuDto: AssignMenuDto[]) {
+    return await this.roleService.assignMenu(assignMenuDto);
   }
 }

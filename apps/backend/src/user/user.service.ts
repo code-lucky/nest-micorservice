@@ -82,4 +82,35 @@ export class UserService {
       }
     });
   }
+
+  /**
+   * 给用户分配角色
+   * @param userId 
+   * @param roleId 
+   * @returns 
+   */
+  async assignRole(userId: number, roleId: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId, deleted: false }
+    });
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    }
+
+    const role = await this.prisma.role.findUnique({
+      where: { id: roleId, deleted: false }
+    });
+    if (!role) {
+      throw new HttpException('Role not found', HttpStatus.BAD_REQUEST);
+    }
+
+    this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        role_id: roleId
+      }
+    });
+
+    return {}
+  }
 }

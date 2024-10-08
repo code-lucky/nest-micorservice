@@ -23,6 +23,7 @@ model user {
   email String?
   role_id Int @default(0)
   role Role @relation(fields: [role_id], references: [id])
+  deleted Boolean @default(false)
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 }
@@ -35,13 +36,13 @@ model Role {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
   users user[]
-  menus menu_role[]
+  menus role_menu[]
 }
 
 model menu {
   id Int @id @default(autoincrement())
-  name String @unique
-  path String @unique
+  name String
+  path String
   icon String
   pid Int @default(0)
   type Int @default(0)
@@ -51,10 +52,10 @@ model menu {
   deleted Boolean @default(false)
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
-  menus menu_role[]
+  roles role_menu[]
 }
 
-model menu_role {
+model role_menu {
   id Int @id @default(autoincrement())
   menu_id Int
   role_id Int

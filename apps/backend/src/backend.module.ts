@@ -6,7 +6,7 @@ import { EmailModule } from '@app/email';
 import { RedisModule } from '@app/redis';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './user/user.module';
-import { AuthGuard, CustomExceptionFilter } from '@app/common';
+import { AuthGuard } from '@app/common';
 import { RoleModule } from './role/role.module';
 import { MenuModule } from './menu/menu.module';
 

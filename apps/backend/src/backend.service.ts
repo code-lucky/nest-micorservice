@@ -8,19 +8,4 @@ export class BackendService {
   getHello(): string {
     return 'Hello World!';
   }
-
-  async getUser() {
-    return await this.prismaService.user.findMany();
-  }
-
-  // 创建用户
-  async createUser() {
-    return await this.prismaService.user.create({
-      data: {
-        username: 'Alice',
-        password: '123456',
-        updated_at: new Date(),
-      },
-    });
-  }
 }

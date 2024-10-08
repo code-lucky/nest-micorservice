@@ -30,4 +30,19 @@ export class UserController {
     console.log(req.user);
     return this.userService.findUser(req.user.userId);
   }
+
+
+  /**
+   * 给用户分配角色
+   * @param userId 
+   * @param roleId 
+   * @returns 
+   */
+  @Post('assignRole')
+  @RequireLogin()
+  async assignRole(@Body() body: { userId: number, roleId: number }) {
+    return await this.userService.assignRole(body.userId, body.roleId);
+  }
+  
+  
 }
