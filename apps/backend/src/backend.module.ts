@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { AuthGuard } from '@app/common';
 import { RoleModule } from './role/role.module';
 import { MenuModule } from './menu/menu.module';
+import { PermissionModule } from './permission/permission.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { MenuModule } from './menu/menu.module';
     UserModule,
     RoleModule,
     MenuModule,
+    PermissionModule,
   ],
   controllers: [BackendController],
   providers: [

@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from '@app/prisma';
 import { md5 } from 'utils/md5';
 import { JwtService } from '@nestjs/jwt';
+import { flattenToTree } from '../utils/flattenToTree';
 
 @Injectable()
 export class UserService {
@@ -33,8 +34,14 @@ export class UserService {
     }
     delete user.password;
 
+    const permissions = await this.prisma.permission.findMany()
+    // 扁平化
+    const flatPermissions = flattenToTree(permissions, 'id', 'parent_id')
     return {
-      user,
+      user:{
+        ...user,
+        permissions: flatPermissions
+      },
       token: this.jwtService.sign({
         userId: user.id,
         username: user.username

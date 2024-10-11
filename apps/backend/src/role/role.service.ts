@@ -145,16 +145,16 @@ export class RoleService {
             if (findMenus.length !== assignMenuDto.length) {
                 throw new HttpException('菜单不存在', HttpStatus.BAD_REQUEST);
             }
-            // 先删除该角色下的所有菜单
-            await prisma.role_menu.deleteMany({
-                where: {
-                    role_id: assignMenuDto[0].role_id
-                }
-            });
-            // 再创建新的菜单
-            await prisma.role_menu.createMany({
-                data: assignMenuDto
-            });
+            // // 先删除该角色下的所有菜单
+            // await prisma.role_menu.deleteMany({
+            //     where: {
+            //         role_id: assignMenuDto[0].role_id
+            //     }
+            // });
+            // // 再创建新的菜单
+            // await prisma.role_menu.createMany({
+            //     data: assignMenuDto
+            // });
 
             return {};
         });
