@@ -2,6 +2,7 @@ import { PrismaService } from '@app/prisma';
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
+import { flattenToTree } from '../utils/flattenToTree';
 
 @Injectable()
 export class MenuService {
@@ -84,31 +85,9 @@ export class MenuService {
             where: { deleted: false }
         });
         
-        // 创建一个映射来快速查找菜单项
-        const menuMap = new Map<number, any>();
+        const menuTree = flattenToTree(menuList, 'id', 'parent_id');
         
-        // 初始化每个菜单项，并将其放入映射中
-        menuList.forEach(menu => {
-            const menuWithChildren = { ...menu, children: [] };
-            menuMap.set(menu.id, menuWithChildren);
-        });
-        
-        // 构建树形结构
-        const menuTree = [];
-        menuList.forEach(menu => {
-            const menuWithChildren = menuMap.get(menu.id);
-            if (menu.parent_id === 0) {
-                // 顶级菜单
-                menuTree.push(menuWithChildren);
-            } else {
-                // 子菜单，添加到父菜单的 children 中
-                const parentMenu = menuMap.get(menu.parent_id);
-                if (parentMenu) {
-                    parentMenu.children.push(menuWithChildren);
-                }
-            }
-        });
-        
+        // 如果 menuTree 是空数组，则返回 null
         return menuTree;
     }
 

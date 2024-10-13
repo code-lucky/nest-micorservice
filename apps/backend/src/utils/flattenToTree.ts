@@ -24,6 +24,16 @@ export const flattenToTree = (data: any[], idField: string = 'id', parentField: 
     }
   });
 
-  console.log('Tree:', JSON.stringify(tree, null, 2));
+  // Recursive function to set children to null if empty
+  const setChildrenToNull = (node) => {
+    if (node.children.length === 0) {
+      node.children = null;
+    } else {
+      node.children.forEach(setChildrenToNull);
+    }
+  };
+
+  // Apply the function to each root node
+  tree.forEach(setChildrenToNull);
   return tree;
 }

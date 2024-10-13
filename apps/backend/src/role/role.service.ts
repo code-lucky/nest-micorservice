@@ -38,10 +38,14 @@ export class RoleService {
      */
     async getList(page: number, limit: number) {
         const total = await this.prisma.role.count();
+
         const list = await this.prisma.role.findMany({
             take: limit,
             skip: (page - 1) * limit,
-            where: { deleted: false }
+            where: { deleted: false },
+            include: {
+                permission: true
+            }
         });
         return { page, limit, total, list };
     }
