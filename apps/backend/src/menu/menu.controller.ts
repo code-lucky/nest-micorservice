@@ -15,6 +15,12 @@ export class MenuController {
     return await this.menuService.create(createMenuDto);
   }
 
+  // Create more
+  @Post('createList')
+  async createList(@Body() createMenuDtoList: CreateMenuDto[]) {
+    return await this.menuService.createList(createMenuDtoList);
+  }
+
   // get role list 支持分页, 默认分页大小为10
   @Get('list')
   async getList(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {

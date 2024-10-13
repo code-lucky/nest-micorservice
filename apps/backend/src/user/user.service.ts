@@ -34,9 +34,24 @@ export class UserService {
     }
     delete user.password;
 
-    const permissions = await this.prisma.permission.findMany()
+    // 拿到当前用户的角色
+    const role = await this.prisma.role.findUnique({
+      where: { id: user.role_id }
+    });
+
+    // 拿到当前角色的权限
+    const permissions = await this.prisma.permission.findMany({
+      where: { role_id: role.id }
+    });
+
+    // 拿到当前角色的菜单
+    const menusList = await this.prisma.menu.findMany({
+      where: { id: { in: permissions.map(item => item.menu_id) } }
+    });
+
     // 扁平化
-    const flatPermissions = flattenToTree(permissions, 'id', 'parent_id')
+    const flatPermissions = flattenToTree(menusList, 'id', 'parent_id')
+    
     return {
       user:{
         ...user,
@@ -83,11 +98,32 @@ export class UserService {
    * @returns 
    */
   async findUser(id: number) {
-    return this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         id
       }
     });
+
+    // 拿到当前用户的角色
+    const role = await this.prisma.role.findUnique({
+      where: { id: user.role_id }
+    });
+
+    // 拿到当前角色的权限
+    const permissions = await this.prisma.permission.findMany({
+      where: { role_id: role.id }
+    });
+
+    // 拿到当前角色的菜单
+    const menusList = await this.prisma.menu.findMany({
+      where: { id: { in: permissions.map(item => item.menu_id) } }
+    });
+
+    // 扁平化
+    return {
+      ...user,
+      permissions: flattenToTree(menusList, 'id', 'parent_id')
+    }
   }
 
   /**
@@ -119,5 +155,32 @@ export class UserService {
     });
 
     return {}
+  }
+
+
+  /**
+   * 获取用户列表
+   * @param page 
+   * @param limit 
+   * @returns 
+   */
+  async getUserList(page: number, limit: number) {
+    // 获取用户列表,并且获取角色名称
+    const users = await this.prisma.user.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      include: {
+        role: true
+      }
+    });
+
+    const total = await this.prisma.user.count();
+
+    return{
+      list: users,
+      total,
+      page,
+      limit
+    }
   }
 }

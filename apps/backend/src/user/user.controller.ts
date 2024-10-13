@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RequireLogin } from '@app/common';
@@ -32,6 +32,13 @@ export class UserController {
   }
 
 
+  // 获取用户列表
+  @Get('list')
+  @RequireLogin()
+  async getUserList(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+    return await this.userService.getUserList(page, limit);
+  }
+
   /**
    * 给用户分配角色
    * @param userId 
@@ -43,6 +50,4 @@ export class UserController {
   async assignRole(@Body() body: { userId: number, roleId: number }) {
     return await this.userService.assignRole(body.userId, body.roleId);
   }
-  
-  
 }

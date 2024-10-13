@@ -36,21 +36,8 @@ model Role {
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
   users       user[]
-}
 
-model menu {
-  id         Int      @id @default(autoincrement())
-  name       String
-  path       String
-  icon       String
-  pid        Int      @default(0)
-  type       Int      @default(0)
-  component  String?
-  sort       Int      @default(0)
-  hidden     Boolean  @default(false)
-  deleted    Boolean  @default(false)
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  permission permission[]
 }
 
 model sys_log {
@@ -65,29 +52,32 @@ model sys_log {
   createTime DateTime @default(now())
 }
 
-model Permission {
+model menu {
   id         Int            @id @default(autoincrement())
   parent_id  Int            @default(0)
   label      String
   name       String
   icon       String?
   type       Int            @default(0)
-  route      String
+  route      String?
   sort       Int?
   hide       Boolean?       @default(false)
   frame_src  String?
   component  String?
+  deleted    Boolean        @default(false)
   created_at DateTime       @default(now())
   updated_at DateTime       @default(now()) @updatedAt
+
+  permission permission[]
 }
 
-enum PermissionType {
-  CATALOGUE
-  MENU
-  BUTTON
-}
 
-enum BasicStatus {
-  ENABLE
-  DISABLE
+model permission {
+  id         Int      @id @default(autoincrement())
+  role_id    Int
+  role       Role     @relation(fields: [role_id], references: [id])
+  menu_id    Int
+  menu       menu     @relation(fields: [menu_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 }

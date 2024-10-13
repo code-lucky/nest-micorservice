@@ -97,12 +97,12 @@ export class MenuService {
         const menuTree = [];
         menuList.forEach(menu => {
             const menuWithChildren = menuMap.get(menu.id);
-            if (menu.pid === 0) {
+            if (menu.parent_id === 0) {
                 // 顶级菜单
                 menuTree.push(menuWithChildren);
             } else {
                 // 子菜单，添加到父菜单的 children 中
-                const parentMenu = menuMap.get(menu.pid);
+                const parentMenu = menuMap.get(menu.parent_id);
                 if (parentMenu) {
                     parentMenu.children.push(menuWithChildren);
                 }
@@ -110,5 +110,16 @@ export class MenuService {
         });
         
         return menuTree;
+    }
+
+    /**
+     * 批量创建菜单
+     * @param createMenuDtoList 
+     * @returns 
+     */
+    async createList(createMenuDtoList: CreateMenuDto[]) {
+        return await this.prisma.menu.createMany({
+            data: createMenuDtoList
+        });
     }
 }
