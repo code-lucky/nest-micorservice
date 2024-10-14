@@ -30,6 +30,28 @@ export class RoleService {
         });
     }
 
+
+    // 创建并分配菜单
+    async createAndAssignMenu(createRoleDto: CreateRoleDto) {
+        await this.prisma.$transaction(async (prisma) => {
+            // 创建角色
+            await this.create(createRoleDto);
+            // 分配菜单
+            await this.assignMenu(createRoleDto.permissions);
+        })
+        return { success: true };
+    }
+
+    // 更新并分配菜单
+    async updateAndAssignMenu(updateRoleDto: UpdateRoleDto) {
+        console.log('updateRoleDto', updateRoleDto);
+        await this.prisma.$transaction(async (prisma) => {
+            // 更新角色
+            await this.update(updateRoleDto);
+            // 分配菜单
+            await this.assignMenu(updateRoleDto.permissions);
+        })
+    }
     /**
      * 查询角色列表
      * @param page 页码
@@ -81,9 +103,14 @@ export class RoleService {
         if (!findRole) {
             throw new HttpException('角色不存在', HttpStatus.BAD_REQUEST);
         }
+        // Exclude 'id' from updateRoleDto when updating
+        const { id, name, description } = updateRoleDto;
         return await this.prisma.role.update({
-            where: { id: updateRoleDto.id },
-            data: updateRoleDto
+            where: { id},
+            data: {
+                name,
+                description
+            }
         });
     }
 
@@ -149,18 +176,21 @@ export class RoleService {
             if (findMenus.length !== assignMenuDto.length) {
                 throw new HttpException('菜单不存在', HttpStatus.BAD_REQUEST);
             }
-            // // 先删除该角色下的所有菜单
-            // await prisma.role_menu.deleteMany({
-            //     where: {
-            //         role_id: assignMenuDto[0].role_id
-            //     }
-            // });
-            // // 再创建新的菜单
-            // await prisma.role_menu.createMany({
-            //     data: assignMenuDto
-            // });
+            // 先删除该角色下的所有菜单
+            await prisma.permission.deleteMany({
+                where: {
+                    role_id: assignMenuDto[0].role_id
+                }
+            });
+            // 再创建新的菜单
+            await prisma.permission.createMany({
+                data: assignMenuDto.map(item => ({
+                    role_id: item.role_id,
+                    menu_id: item.menu_id
+                }))
+            });
 
-            return {};
+            return true;
         });
     }
 }

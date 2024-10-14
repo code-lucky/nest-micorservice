@@ -47,4 +47,24 @@ export class RoleController {
   async assignMenu(@Body() assignMenuDto: AssignMenuDto[]) {
     return await this.roleService.assignMenu(assignMenuDto);
   }
+
+  /**
+   * 创建角色并分配菜单
+   * @param body 
+   * @returns 
+   */
+  @Post('createAndAuth')
+  async createAndAssignMenu(@Body() createRoleDto: CreateRoleDto) {
+    return await this.roleService.createAndAssignMenu(createRoleDto);
+  }
+
+  /**
+   * 更新并分配菜单
+   * @param updateRoleDto 
+   * @returns 
+   */
+  @Post('updateAndAuth')
+  async updateAndAssignMenu(@Body() updateRoleDto: UpdateRoleDto) {
+    return await this.roleService.updateAndAssignMenu(updateRoleDto);
+  }
 }

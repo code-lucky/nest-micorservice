@@ -14,6 +14,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(BackendModule);
 
+  
+
   // 开启跨域处理
   app.enableCors();
 
@@ -29,6 +31,12 @@ async function bootstrap() {
   app.use(bodyParser.json({ limit: '10mb' }));
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
+  // 全局使用 ValidationPipe
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // 自动移除 DTO 中未定义的属性
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('nest-cli')

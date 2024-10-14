@@ -16,7 +16,7 @@ export class FormatResponseInterceptor implements NestInterceptor {
       return {
         code: response.statusCode == 200 || response.statusCode == 201 ? 200 : response.statusCode,
         message: 'success',
-        data
+        data: data ? data : {}
       }
     }));
   }
