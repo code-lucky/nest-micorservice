@@ -15,16 +15,17 @@ export class CreateMenuDto {
     route: string;
 
     @IsOptional()
-    parent_id?: number; // Optional, defaults to 0
+    @IsInt()
+    parent_id?: number = 0;
 
     @IsOptional()
     type?: number; // Optional, defaults to 0
 
     @IsOptional()
-    sort?: number;
+    sort?: number = 0;
 
     @IsOptional()
-    hide?: boolean; // Optional, defaults to false
+    hide?: boolean = false;
 
     @IsOptional()
     frame_src?: string;
@@ -33,5 +34,5 @@ export class CreateMenuDto {
     component?: string;
 
     @IsOptional()
-    deleted?: boolean; // Optional, defaults to false
+    deleted?: boolean = false;
 }

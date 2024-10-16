@@ -48,9 +48,9 @@ export class MenuController {
   // delete menu
   @Post('delete/:id')
   async remove(@Param('id') id: number) {
-    return await this.menuService.remove(id);
+    return await this.menuService.remove(+id);
   }
-
+  
   // 获取菜单树
   @Get('tree')
   async getMenuTree() {
