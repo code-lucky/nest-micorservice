@@ -18,6 +18,11 @@ enum Gender {
   female
 }
 
+enum Status {
+  enable
+  disable
+}
+
 model User {
   id         Int      @id @default(autoincrement())
   username   String   @unique
@@ -28,6 +33,7 @@ model User {
   email      String?
   role_id    Int      @default(0)
   role       Role     @relation(fields: [role_id], references: [id])
+  status     Status   @default(enable)
   deleted    Boolean  @default(false)
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
@@ -38,15 +44,15 @@ model Role {
   name        String   @unique
   description String?
   deleted     Boolean  @default(false)
-  status      Int      @default(1)
+  status      Status   @default(enable)
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now()) @updatedAt
   users       User[]
 
-  permission permission[]
+  permission Permission[]
 }
 
-model sys_log {
+model Sys_Log {
   id         Int      @id @default(autoincrement())
   user_id    Int
   username   String
@@ -58,7 +64,7 @@ model sys_log {
   createTime DateTime @default(now())
 }
 
-model menu {
+model Menu {
   id         Int            @id @default(autoincrement())
   parent_id  Int            @default(0)
   label      String
@@ -70,20 +76,69 @@ model menu {
   hide       Boolean?       @default(false)
   frame_src  String?
   component  String?
+  status     Status   @default(enable)
   deleted    Boolean        @default(false)
   created_at DateTime       @default(now())
   updated_at DateTime       @default(now()) @updatedAt
 
-  permission permission[]
+  permission Permission[]
 }
 
 
-model permission {
+model Permission {
   id         Int      @id @default(autoincrement())
   role_id    Int
   role       Role     @relation(fields: [role_id], references: [id])
   menu_id    Int
-  menu       menu     @relation(fields: [menu_id], references: [id])
+  menu       Menu     @relation(fields: [menu_id], references: [id])
+  status     Status   @default(enable)
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
+}
+
+
+model Pricing {
+  id              Int      @id @default(autoincrement())
+  name            String
+  price           Float
+  currency        String   // 货币类型
+  description     String?  // 定价描述
+  discount        Float?   // 折扣金额或百分比
+  effective_date  DateTime? // 生效日期
+  expiration_date DateTime? // 失效日期
+  status          Status   @default(enable)
+  version         Int      @default(1) // 版本号
+  category        String?  // 定价类别
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now()) @updatedAt
+}
+
+
+model Client {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  avatar     String?
+  phone      String?
+  address    String?
+  status     Status   @default(enable)
+  company    String?
+  notes      String?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+}
+
+model Redemption_Code {
+  id              Int      @id @default(autoincrement())
+  code            String   @unique // 兑换码
+  description     String?  // 兑换码描述
+  discount_amount Float?   // 折扣金额
+  discount_type   String   // 折扣类型，例如 "percentage" 或 "fixed"
+  usage_limit     Int?     // 使用次数限制
+  used_count      Int      @default(0) // 已使用次数
+  valid_from      DateTime? // 开始有效日期
+  valid_until     DateTime? // 结束有效日期
+  status          Status   @default(enable)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now()) @updatedAt
 }
