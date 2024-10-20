@@ -83,7 +83,10 @@ export class RoleService {
      */
     async findOne(id: number) {
         const role = await this.prisma.role.findUnique({
-            where: { id, deleted: false }
+            where: { id, deleted: false },
+            include: {
+                permission: true
+            }
         });
         if (!role) {
             throw new HttpException('角色不存在', HttpStatus.BAD_REQUEST);

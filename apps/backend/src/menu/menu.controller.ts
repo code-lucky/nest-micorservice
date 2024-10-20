@@ -56,4 +56,12 @@ export class MenuController {
   async getMenuTree() {
     return await this.menuService.getMenuTree();
   }
+
+  
+
+  // 获取一级菜单
+  @Get('firstLevel')
+  async getFirstLevelMenu() {
+    return await this.menuService.getFirstLevelMenu();
+  }
 }

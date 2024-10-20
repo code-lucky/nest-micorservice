@@ -24,7 +24,7 @@ export class UserService {
 
     const user = await this.prisma.user.findUnique({
       where: {
-        username: body.username,
+        user_name: body.user_name,
         password: md5(body.password)
       }
     });
@@ -59,7 +59,7 @@ export class UserService {
       },
       token: this.jwtService.sign({
         userId: user.id,
-        username: user.username
+        user_name: user.user_name
       }, {
         expiresIn: '7d'
       })
@@ -75,17 +75,17 @@ export class UserService {
     // if user already exists
     const count = await this.prisma.user.count({
       where: {
-        username: createUserDto.username
+        user_name: createUserDto.user_name
       }
     });
     if (count === 1) {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
-    const { username, password } = createUserDto
+    const { user_name, password } = createUserDto
     // 密码加密
     return this.prisma.user.create({
       data: {
-        username,
+        user_name,
         password: md5(password),
         role_id: 1
       },
@@ -122,7 +122,7 @@ export class UserService {
     // 扁平化
     return {
       ...user,
-      permissions: flattenToTree(menusList, 'id', 'parent_id')
+      permissions: menusList
     }
   }
 

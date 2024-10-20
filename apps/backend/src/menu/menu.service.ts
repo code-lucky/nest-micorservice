@@ -124,4 +124,12 @@ export class MenuService {
       data: createMenuDtoList,
     });
   }
+
+  /**
+   * 获取一级菜单
+   * @returns
+   */
+  async getFirstLevelMenu() {
+    return await this.prisma.menu.findMany({ where: { parent_id: 0, deleted: false } });
+  }
 }

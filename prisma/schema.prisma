@@ -25,7 +25,7 @@ enum Status {
 
 model User {
   id         Int      @id @default(autoincrement())
-  username   String   @unique
+  user_name  String   @unique   
   password   String
   gender     Gender?
   avatar     String?
@@ -65,25 +65,24 @@ model Sys_Log {
 }
 
 model Menu {
-  id         Int            @id @default(autoincrement())
-  parent_id  Int            @default(0)
+  id         Int      @id @default(autoincrement())
+  parent_id  Int      @default(0)
   label      String
-  name       String
+  path       String
   icon       String?
-  type       Int            @default(0)
+  type       Int      @default(0)
   route      String?
   sort       Int?
-  hide       Boolean?       @default(false)
+  hide       Boolean? @default(false)
   frame_src  String?
   component  String?
   status     Status   @default(enable)
-  deleted    Boolean        @default(false)
-  created_at DateTime       @default(now())
-  updated_at DateTime       @default(now()) @updatedAt
+  deleted    Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 
   permission Permission[]
 }
-
 
 model Permission {
   id         Int      @id @default(autoincrement())
@@ -96,23 +95,21 @@ model Permission {
   updated_at DateTime @default(now()) @updatedAt
 }
 
-
 model Pricing {
-  id              Int      @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   name            String
   price           Float
-  currency        String   // 货币类型
-  description     String?  // 定价描述
-  discount        Float?   // 折扣金额或百分比
+  currency        String // 货币类型
+  description     String? // 定价描述
+  discount        Float? // 折扣金额或百分比
   effective_date  DateTime? // 生效日期
   expiration_date DateTime? // 失效日期
-  status          Status   @default(enable)
-  version         Int      @default(1) // 版本号
-  category        String?  // 定价类别
-  created_at      DateTime @default(now())
-  updated_at      DateTime @default(now()) @updatedAt
+  status          Status    @default(enable)
+  version         Int       @default(1) // 版本号
+  category        String? // 定价类别
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @default(now()) @updatedAt
 }
-
 
 model Client {
   id         Int      @id @default(autoincrement())
@@ -129,16 +126,16 @@ model Client {
 }
 
 model Redemption_Code {
-  id              Int      @id @default(autoincrement())
-  code            String   @unique // 兑换码
-  description     String?  // 兑换码描述
-  discount_amount Float?   // 折扣金额
-  discount_type   String   // 折扣类型，例如 "percentage" 或 "fixed"
-  usage_limit     Int?     // 使用次数限制
-  used_count      Int      @default(0) // 已使用次数
+  id              Int       @id @default(autoincrement())
+  code            String    @unique // 兑换码
+  description     String? // 兑换码描述
+  discount_amount Float? // 折扣金额
+  discount_type   String // 折扣类型，例如 "percentage" 或 "fixed"
+  usage_limit     Int? // 使用次数限制
+  used_count      Int       @default(0) // 已使用次数
   valid_from      DateTime? // 开始有效日期
   valid_until     DateTime? // 结束有效日期
-  status          Status   @default(enable)
-  created_at      DateTime @default(now())
-  updated_at      DateTime @default(now()) @updatedAt
+  status          Status    @default(enable)
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @default(now()) @updatedAt
 }
