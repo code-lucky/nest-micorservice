@@ -14,8 +14,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(BackendModule);
 
-  
-
   // 开启跨域处理
   app.enableCors();
 

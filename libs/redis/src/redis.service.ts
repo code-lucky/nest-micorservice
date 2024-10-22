@@ -5,11 +5,7 @@ import { RedisClientType } from 'redis';
 export class RedisService {
 
     @Inject('REDIS_CLIENT') 
-    private redisClient: RedisClientType
-
-    async keys(pattern: string) {
-        return await this.redisClient.keys(pattern);
-    }
+    private redisClient: RedisClientType;
 
     async get(key: string) {
         return await this.redisClient.get(key);
@@ -21,5 +17,9 @@ export class RedisService {
         if(ttl) {
             await this.redisClient.expire(key, ttl);
         }
+    }
+
+    async del(key: string) {
+        await this.redisClient.del(key);
     }
 }
