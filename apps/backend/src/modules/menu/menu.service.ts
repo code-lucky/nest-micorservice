@@ -2,7 +2,7 @@ import { PrismaService } from '@app/prisma';
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
-import { flattenToTree } from '../utils/flattenToTree';
+import { flattenToTree } from '../../utils/flattenToTree';
 
 @Injectable()
 export class MenuService {

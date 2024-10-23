@@ -5,11 +5,13 @@ import { PrismaModule } from '@app/prisma';
 import { EmailModule } from '@app/email';
 import { RedisModule } from '@app/redis';
 import { JwtModule } from '@nestjs/jwt';
-import { UserModule } from './user/user.module';
+import { UserModule } from './modules/user/user.module';
 import { AuthGuard } from '@app/common';
-import { RoleModule } from './role/role.module';
-import { MenuModule } from './menu/menu.module';
-import { PermissionModule } from './permission/permission.module';
+import { RoleModule } from './modules/role/role.module';
+import { MenuModule } from './modules/menu/menu.module';
+import { PermissionModule } from './modules/permission/permission.module';
+import { join } from 'path';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -26,6 +28,10 @@ import { PermissionModule } from './permission/permission.module';
           }
         }
       }
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: join(process.cwd(), '.env') // Updated to point to the root directory
     }),
     UserModule,
     RoleModule,

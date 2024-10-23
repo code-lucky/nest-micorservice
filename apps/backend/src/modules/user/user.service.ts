@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from '@app/prisma';
 import { md5 } from 'utils/md5';
 import { JwtService } from '@nestjs/jwt';
-import { flattenToTree } from '../utils/flattenToTree';
+import { flattenToTree } from '../../utils/flattenToTree';
 
 @Injectable()
 export class UserService {
